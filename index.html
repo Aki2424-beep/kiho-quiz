@@ -54,40 +54,40 @@
     z-index: 1;
     max-width: 860px;
     margin: 0 auto;
-    padding: 0 16px 60px;
+    padding: 0 16px 24px;
   }
 
   /* Header */
   .header {
     text-align: center;
-    padding: 40px 0 28px;
+    padding: 16px 0 14px;
   }
   .header-badge {
     display: inline-block;
     background: linear-gradient(135deg, var(--gold), var(--gold-light));
     color: var(--navy);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 2px;
-    padding: 5px 16px;
+    padding: 3px 12px;
     border-radius: 20px;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
     text-transform: uppercase;
   }
   .header h1 {
     font-family: 'Noto Serif JP', serif;
-    font-size: clamp(22px, 5vw, 32px);
+    font-size: clamp(18px, 4vw, 24px);
     color: var(--white);
     letter-spacing: 0.04em;
-    line-height: 1.3;
+    line-height: 1.2;
   }
   .header h1 span {
     color: var(--gold);
   }
   .header-sub {
     color: var(--text-light);
-    font-size: 13px;
-    margin-top: 8px;
+    font-size: 11px;
+    margin-top: 5px;
     letter-spacing: 0.05em;
   }
 
@@ -95,10 +95,10 @@
   .nav {
     display: flex;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     background: rgba(255,255,255,0.04);
     border-radius: 12px;
-    padding: 6px;
+    padding: 5px;
     border: 1px solid rgba(201,168,76,0.15);
   }
   .nav-btn {
@@ -139,7 +139,7 @@
   .quiz-controls {
     display: flex;
     gap: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
     align-items: center;
   }
@@ -181,8 +181,8 @@
   .progress-bar-wrap {
     background: rgba(255,255,255,0.08);
     border-radius: 4px;
-    height: 5px;
-    margin-bottom: 20px;
+    height: 4px;
+    margin-bottom: 12px;
     overflow: hidden;
   }
   .progress-bar {
@@ -196,7 +196,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
   .quiz-counter {
     color: var(--text-light);
@@ -217,8 +217,8 @@
   .question-card {
     background: var(--white);
     border-radius: var(--radius);
-    padding: 28px 30px;
-    margin-bottom: 16px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
     box-shadow: var(--shadow);
     border-top: 4px solid var(--gold);
   }
@@ -228,12 +228,12 @@
     color: var(--gold);
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
   .question-text {
     font-family: 'Noto Serif JP', serif;
-    font-size: clamp(16px, 3.5vw, 19px);
-    line-height: 1.75;
+    font-size: clamp(15px, 3vw, 17px);
+    line-height: 1.7;
     color: var(--text-dark);
     font-weight: 600;
   }
@@ -242,21 +242,21 @@
   .options-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 8px;
+    margin-bottom: 12px;
   }
   @media (max-width: 540px) {
     .options-grid { grid-template-columns: 1fr; }
   }
 
   .option-btn {
-    padding: 14px 18px;
+    padding: 11px 14px;
     border: 2px solid #e8edf2;
     border-radius: 10px;
     background: var(--white);
     text-align: left;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.4;
     cursor: pointer;
     font-family: 'Noto Sans JP', sans-serif;
     color: var(--text-dark);
@@ -305,8 +305,8 @@
   .answer-reveal {
     background: var(--cream);
     border-radius: 10px;
-    padding: 16px 20px;
-    margin-bottom: 16px;
+    padding: 12px 16px;
+    margin-bottom: 70px; /* space for sticky next btn */
     border-left: 4px solid var(--correct);
     display: none;
     animation: slideIn 0.2s ease;
@@ -322,7 +322,7 @@
     color: var(--text-light);
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .answer-reveal .ar-text {
     font-family: 'Noto Serif JP', serif;
@@ -332,12 +332,31 @@
   }
   .answer-reveal.wrong-reveal .ar-text { color: var(--wrong); }
 
+  /* Sticky next button */
+  .next-btn-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    background: linear-gradient(to top, rgba(13,27,42,1) 60%, rgba(13,27,42,0));
+    z-index: 100;
+    display: none;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   .next-btn {
+    display: block;
     width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
     padding: 14px;
     background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
     color: var(--gold);
-    border: 2px solid rgba(201,168,76,0.4);
+    border: 2px solid rgba(201,168,76,0.5);
     border-radius: 10px;
     font-size: 15px;
     font-weight: 700;
@@ -345,9 +364,9 @@
     font-family: 'Noto Serif JP', serif;
     letter-spacing: 0.06em;
     transition: all 0.2s;
-    display: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
   }
-  .next-btn:hover { background: var(--navy-light); border-color: var(--gold); box-shadow: 0 4px 14px rgba(201,168,76,0.25); }
+  .next-btn:hover { background: var(--navy-light); border-color: var(--gold); }
 
   /* ===== RESULTS SCREEN ===== */
   #results-screen { display: none; }
@@ -610,7 +629,9 @@
       <div class="ar-text" id="answer-text"></div>
     </div>
 
-    <button class="next-btn" id="next-btn" onclick="nextQuestion()">次の問題へ　→</button>
+    <div class="next-btn-wrap" id="next-btn-wrap">
+      <button class="next-btn" id="next-btn" onclick="nextQuestion()">次の問題へ　→</button>
+    </div>
 
     <div class="completed-banner" id="completed-banner">
       🎉 このセットが完了しました！結果を確認しましょう
@@ -1010,7 +1031,10 @@ function renderQuestion() {
   document.getElementById('quiz-cat-tag').textContent = q[2];
   document.getElementById('question-text').textContent = q[0];
   document.getElementById('answer-reveal').style.display = 'none';
-  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('next-btn-wrap').style.display = 'none';
+
+  // Scroll to top for new question
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   // Generate 4 choices
   const correct = q[1];
@@ -1061,7 +1085,12 @@ function selectAnswer(chosen, correct, choices, btn) {
   reveal.className = 'answer-reveal' + (isCorrect ? '' : ' wrong-reveal');
   document.getElementById('answer-text').textContent = correct;
 
-  document.getElementById('next-btn').style.display = 'block';
+  document.getElementById('next-btn-wrap').style.display = 'block';
+
+  // Auto-scroll so answer reveal is visible
+  setTimeout(() => {
+    document.getElementById('answer-reveal').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 80);
 }
 
 function nextQuestion() {
