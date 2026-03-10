@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>経営法務 一問一答 | 中小企業診断士</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #1a2e45;
+    --navy-light: #243b55;
+    --gold: #c9a84c;
+    --gold-light: #e8c66d;
+    --gold-pale: #f5e6b8;
+    --cream: #faf6ef;
+    --white: #ffffff;
+    --text-dark: #1a1a2e;
+    --text-mid: #3a4a5c;
+    --text-light: #8a9bb0;
+    --correct: #2e7d52;
+    --correct-bg: #e8f5ee;
+    --wrong: #b52a2a;
+    --wrong-bg: #fdeaea;
+    --shadow: 0 8px 32px rgba(13,27,42,0.18);
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--navy);
+    min-height: 100vh;
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(36,59,85,0.6) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 28px;
+  }
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(22px, 5vw, 32px);
+    color: var(--white);
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+  .header h1 span {
+    color: var(--gold);
+  }
+  .header-sub {
+    color: var(--text-light);
+    font-size: 13px;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Nav tabs */
+  .nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 6px;
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+  .nav-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans JP', sans-serif;
+    background: transparent;
+    color: var(--text-light);
+  }
+  .nav-btn.active {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(201,168,76,0.35);
+  }
+  .nav-btn:hover:not(.active) {
+    background: rgba(255,255,255,0.06);
+    color: var(--white);
+  }
+
+  /* Card base */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  /* ===== QUIZ SCREEN ===== */
+  #quiz-screen {}
+
+  .quiz-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .cat-filter {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 14px;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 9px;
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+  }
+  .cat-filter option { background: var(--navy); color: var(--white); }
+
+  .quiz-start-btn {
+    padding: 10px 22px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    border: none;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .quiz-start-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(201,168,76,0.4); }
+
+  /* Progress */
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    height: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  .quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .quiz-counter {
+    color: var(--text-light);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .quiz-cat-tag {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-light);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* Question card */
+  .question-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px 30px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--gold);
+  }
+  .question-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .question-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(16px, 3.5vw, 19px);
+    line-height: 1.75;
+    color: var(--text-dark);
+    font-weight: 600;
+  }
+
+  /* Options */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 540px) {
+    .options-grid { grid-template-columns: 1fr; }
+  }
+
+  .option-btn {
+    padding: 14px 18px;
+    border: 2px solid #e8edf2;
+    border-radius: 10px;
+    background: var(--white);
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text-dark);
+    transition: all 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(201,168,76,0.25);
+  }
+  .option-btn .opt-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #f0f4f8;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-mid);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .option-btn .opt-text { flex: 1; }
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+  .option-btn.correct .opt-label { background: var(--correct); color: white; }
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: var(--wrong);
+  }
+  .option-btn.wrong .opt-label { background: var(--wrong); color: white; }
+  .option-btn:disabled { cursor: default; }
+
+  /* Answer reveal */
+  .answer-reveal {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--correct);
+    display: none;
+    animation: slideIn 0.2s ease;
+  }
+  .answer-reveal.wrong-reveal { border-color: var(--wrong); }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .answer-reveal .ar-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .answer-reveal .ar-text {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--correct);
+  }
+  .answer-reveal.wrong-reveal .ar-text { color: var(--wrong); }
+
+  .next-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+    color: var(--gold);
+    border: 2px solid rgba(201,168,76,0.4);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Serif JP', serif;
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+    display: none;
+  }
+  .next-btn:hover { background: var(--navy-light); border-color: var(--gold); box-shadow: 0 4px 14px rgba(201,168,76,0.25); }
+
+  /* ===== RESULTS SCREEN ===== */
+  #results-screen { display: none; }
+
+  .result-hero {
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid rgba(201,168,76,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.12), transparent);
+  }
+  .result-score-label { font-size: 13px; color: var(--text-light); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .result-score {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 68px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .result-score span { font-size: 28px; color: var(--gold-light); }
+  .result-total { color: var(--text-light); font-size: 14px; margin-bottom: 16px; }
+  .result-grade {
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+  }
+  .grade-S { background: linear-gradient(135deg, #ffd700, #ffb700); color: #5a4000; }
+  .grade-A { background: linear-gradient(135deg, #4caf50, #388e3c); color: white; }
+  .grade-B { background: linear-gradient(135deg, #2196f3, #1565c0); color: white; }
+  .grade-C { background: linear-gradient(135deg, #ff9800, #e65100); color: white; }
+  .grade-D { background: linear-gradient(135deg, #f44336, #b71c1c); color: white; }
+
+  /* Radar chart */
+  .chart-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .chart-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chart-title::before { content: ''; display: block; width: 4px; height: 18px; background: var(--gold); border-radius: 2px; }
+  #radar-canvas { width: 100%; max-width: 480px; display: block; margin: 0 auto; }
+
+  /* Category breakdown */
+  .breakdown-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .breakdown-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .breakdown-title::before { content: ''; display: block; width: 4px; height: 18px; background: var(--gold); border-radius: 2px; }
+  .cat-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .cat-name { font-size: 12px; color: var(--text-mid); width: 140px; flex-shrink: 0; font-weight: 500; }
+  .cat-bar-wrap { flex: 1; background: #f0f4f8; border-radius: 4px; height: 8px; overflow: hidden; }
+  .cat-bar { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transition: width 0.8s ease; }
+  .cat-pct { font-size: 12px; color: var(--text-mid); width: 48px; text-align: right; font-weight: 600; }
+
+  .result-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .result-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: all 0.2s;
+    min-width: 140px;
+  }
+  .result-btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--navy);
+    border: none;
+    box-shadow: 0 4px 14px rgba(201,168,76,0.35);
+  }
+  .result-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.45); }
+  .result-btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.25);
+  }
+  .result-btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ===== STATS SCREEN ===== */
+  #stats-screen { display: none; }
+
+  .stats-header {
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .stats-header h2 {
+    font-family: 'Noto Serif JP', serif;
+    color: var(--white);
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    border: 1px solid rgba(201,168,76,0.12);
+  }
+  .stat-value {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 28px;
+    color: var(--gold);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 11px; color: var(--text-light); letter-spacing: 0.05em; }
+
+  .wrong-list-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .wrong-list-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .wrong-list-title::before { content: ''; display: block; width: 4px; height: 18px; background: var(--wrong); border-radius: 2px; }
+  .wrong-item {
+    border-bottom: 1px solid #f0f4f8;
+    padding: 14px 0;
+  }
+  .wrong-item:last-child { border-bottom: none; }
+  .wrong-q { font-size: 13px; color: var(--text-dark); margin-bottom: 6px; line-height: 1.5; }
+  .wrong-a-row { display: flex; gap: 12px; font-size: 12px; }
+  .wrong-correct { color: var(--correct); font-weight: 600; }
+  .wrong-wrong { color: var(--wrong); text-decoration: line-through; }
+  .no-wrong { text-align: center; color: var(--text-light); font-size: 14px; padding: 20px 0; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .question-card { padding: 20px 18px; }
+    .result-hero { padding: 24px 20px; }
+    .result-score { font-size: 52px; }
+    .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    .chart-card, .breakdown-card { padding: 20px; }
+  }
+
+  /* Completed banner */
+  .completed-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(46,125,82,0.15), rgba(46,125,82,0.05));
+    border: 1px solid rgba(46,125,82,0.3);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    color: var(--correct);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-badge">中小企業診断士 2026年度対策</div>
+    <h1>経営法務 <span>一問一答</span></h1>
+    <p class="header-sub">203問 ／ 4択クイズ形式 ／ 成績トラッキング付き</p>
+  </div>
+
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showScreen('quiz')">📝 クイズ</button>
+    <button class="nav-btn" onclick="showScreen('stats')">📊 成績</button>
+  </nav>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen">
+    <div class="quiz-controls">
+      <select class="cat-filter" id="cat-filter" onchange="resetQuiz()">
+        <option value="all">すべてのカテゴリ（203問）</option>
+      </select>
+      <button class="quiz-start-btn" onclick="resetQuiz()">🔀 シャッフル</button>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+    </div>
+
+    <div class="quiz-meta">
+      <span class="quiz-counter" id="quiz-counter">問題 1 / 0</span>
+      <span class="quiz-cat-tag" id="quiz-cat-tag">—</span>
+    </div>
+
+    <div class="question-card">
+      <div class="question-label">Q U E S T I O N</div>
+      <div class="question-text" id="question-text">カテゴリを選択してクイズを開始してください</div>
+    </div>
+
+    <div class="options-grid" id="options-grid"></div>
+
+    <div class="answer-reveal" id="answer-reveal">
+      <div class="ar-label">正解</div>
+      <div class="ar-text" id="answer-text"></div>
+    </div>
+
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">次の問題へ　→</button>
+
+    <div class="completed-banner" id="completed-banner">
+      🎉 このセットが完了しました！結果を確認しましょう
+      <br><button onclick="showScreen('results')" style="margin-top:8px;padding:8px 20px;background:var(--correct);color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;">結果を見る</button>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div id="results-screen">
+    <div class="result-hero">
+      <div class="result-score-label">SCORE</div>
+      <div class="result-score" id="r-score">0<span>点</span></div>
+      <div class="result-total" id="r-total">0問中0問正解</div>
+      <div class="result-grade" id="r-grade">—</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">カテゴリ別 レーダーチャート</div>
+      <canvas id="radar-canvas" width="480" height="480"></canvas>
+    </div>
+
+    <div class="breakdown-card">
+      <div class="breakdown-title">カテゴリ別 正解率</div>
+      <div id="breakdown-list"></div>
+    </div>
+
+    <div class="result-actions">
+      <button class="result-btn result-btn-primary" onclick="resetQuiz(); showScreen('quiz')">🔄 もう一度</button>
+      <button class="result-btn result-btn-secondary" onclick="reviewWrong()">❌ 間違いを復習</button>
+    </div>
+  </div>
+
+  <!-- STATS SCREEN -->
+  <div id="stats-screen">
+    <div class="stats-header">
+      <h2>累計成績</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-value" id="st-total">0</div>
+          <div class="stat-label">累計回答数</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="st-correct">0</div>
+          <div class="stat-label">累計正解数</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="st-rate">0%</div>
+          <div class="stat-label">総合正解率</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">カテゴリ別 習熟度</div>
+      <canvas id="radar-canvas-stats" width="480" height="480"></canvas>
+    </div>
+
+    <div class="wrong-list-card">
+      <div class="wrong-list-title">苦手問題リスト（直近50問）</div>
+      <div id="wrong-list"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px;">
+      <button onclick="clearStats()" style="padding:10px 22px;background:transparent;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.15);border-radius:8px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;">データをリセット</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const RAW_DATA = [
+["権利能力とは何の主体となれる地位か","権利義務","民法基礎"],
+["日本で権利能力を持つのは自然人と何か","法人","民法基礎"],
+["民法上、無効とは法律行為の時点から法律上の何が生じないことか","効果","民法基礎"],
+["取消しは、取り消すまでは有効だが、取り消した場合はどうなるか","将来にわたって無効","民法基礎"],
+["行為能力のない、または不十分な者を何と呼ぶか","制限行為能力者","民法基礎"],
+["制限行為能力者が行った行為は原則として何ができるか","取り消す（取消可能）","民法基礎"],
+["制限行為能力者の類型のうち、判断能力が全くない者として家庭裁判所が宣告するのは何か","成年被後見人","民法基礎"],
+["制限行為能力者の類型で、判断能力が著しく不十分な者として保護される者は何か","被保佐人","民法基礎"],
+["民法上、善意とはある事情を何と言うか","知らないこと","民法基礎"],
+["民法上、悪意とはある事情を何と言うか","知っていること","民法基礎"],
+["意思の不存在の3類型のうち、相手方と通じて行った虚偽の意思表示を何と言うか","通謀虚偽表示","民法基礎"],
+["通謀虚偽表示は当然無効であるが、何には無効を主張できないか","善意の第三者","民法基礎"],
+["表示行為に対する内心的効果意思が欠けることを何と言うか","錯誤","民法基礎"],
+["錯誤が認められるには、法律行為の目的および社会通念に照らし重要な錯誤があり、かつ表意者が何であることが必要か","善意・無重過失","民法基礎"],
+["詐欺・強迫による意思表示で、強迫の場合は善意の第三者Cに対抗できるか","対抗できる","民法基礎"],
+["詐欺・強迫による意思表示で、詐欺の場合は善意の第三者Cに対抗できるか","対抗できない","民法基礎"],
+["代理とは、本人が代理人を立て、その代理人がした意思表示が直接本人に何する制度か","帰属","意思表示・代理"],
+["代理の種類は法定代理と何か","任意代理","意思表示・代理"],
+["無権代理とは代理権のない者が勝手に代理行為をすることで、原則として何か","無効（原則無効）","意思表示・代理"],
+["無権代理行為を本人が追認した場合、いつに遡って有効となるか","契約の時（さかのぼって）","意思表示・代理"],
+["代理人は制限能力者でも可能だが、本人はそれを理由に何できないか","契約を取り消す","意思表示・代理"],
+["権限のない代理人ができることとして、保存行為・利用行為ともう一つは何か","改良行為","意思表示・代理"],
+["代理人自らが契約相手となる自己契約は原則不可だが、事前または何があれば有効か","事後の承諾","意思表示・代理"],
+["表見代理とは、無権代理でありながら、何と同じく代理効果が本人に帰属する制度か","有権代理","意思表示・代理"],
+["無権代理の相手方が悪意の場合、認められるのは何のみか","催告","意思表示・代理"],
+["無権代理の相手方が善意無過失の場合、催告・取消に加えて認められるのは何か","履行請求・損害賠償請求","意思表示・代理"],
+["条件のうち、法律行為の発生に係るものを何条件と言うか","停止条件","時効・条件"],
+["条件のうち、法律行為の消滅に係るものを何条件と言うか","解除条件","時効・条件"],
+["一定期間ある状態が続いた場合、事実の権利関係と違っても、その状態を認める制度を何と言うか","時効","時効・条件"],
+["取得時効で善意無過失の場合に必要な占有期間は何年か","10年","時効・条件"],
+["取得時効で悪意有過失の場合に必要な占有期間は何年か","20年","時効・条件"],
+["取得時効では、善意の判断はいつの時点でよいか","占有開始時","時効・条件"],
+["消滅時効の要件として、権利行使可能であることを知ったときから何年の不行使が必要か","5年","時効・条件"],
+["消滅時効の成立には更新と何がないことが必要か","完成猶予","時効・条件"],
+["請負契約とは、仕事を完成させることを約束し、その結果に対して何を支払う契約か","報酬","債権・契約"],
+["請負と委任の比較で、請負の契約目的は何か","仕事の完成","債権・契約"],
+["請負と委任の比較で、委任の契約目的は何か","事務の処理","債権・契約"],
+["請負における責任は何責任か","契約不適合責任","債権・契約"],
+["委任における受任者の責任は何か","善管注意義務","債権・契約"],
+["定型約款とは、定型取引において契約の内容とすることを目的として準備された条項の何か","総体","債権・契約"],
+["ファイナンスリースでリース会社がユーザーに設定する権利は何か","使用収益権","債権・契約"],
+["保証契約は、書面でなされない限り何になるか","無効","保証・担保"],
+["個人が事業用融資に対して保証する場合、公正証書による意思表示がなければ何になるか","無効","保証・担保"],
+["根保証契約では、保証人が支払の責任を負う金額の上限となる何を定める必要があるか","極度額","保証・担保"],
+["保証の附従性として、主債務が成立していなければ保証債務はどうなるか","成立しない","保証・担保"],
+["保証の附従性として、主債務が消滅すれば保証債務はどうなるか","消滅する","保証・担保"],
+["補充性の一つとして、主たる債務者が弁済の資力がありかつ執行が容易であることを証明すれば主張できる権利は何か","検索の抗弁権","保証・担保"],
+["連帯保証では補充性が認められないため、催告の抗弁権と何が認められないか","検索の抗弁権","保証・担保"],
+["連帯保証の場合、分別の利益がないので債権者は保証人に何を求めることができるか","全額の支払い","保証・担保"],
+["債務が主債務者の商行為により生じた場合、保証はどうなるか","連帯保証","保証・担保"],
+["債権者代位権とは、債権者が自己の債権を担保するために債務者に属する権利を何する権利か","行使","債権者保護・不法行為"],
+["詐害行為取消権の出訴期間は、知った時から何年か","2年","債権者保護・不法行為"],
+["詐害行為取消権の出訴期間は、行為の時から何年か","10年","債権者保護・不法行為"],
+["債権者代位権は裁判外でも裁判上でも行使できるが、詐害行為取消権はどこで行使しなければならないか","裁判上","債権者保護・不法行為"],
+["不法行為の要件として、損害と加害行為との間に何があることが必要か","因果関係","債権者保護・不法行為"],
+["不法行為の消滅時効は、損害および加害者を知った時から何年か","3年","債権者保護・不法行為"],
+["使用者責任において、使用者が責任を負うのは被用者がその事業の執行について第三者に何をした場合か","損害を加えた","債権者保護・不法行為"],
+["不当利得で悪意の受益者は現存利益に加えて何を付して返還する必要があるか","利息","債権者保護・不法行為"],
+["法定担保物権として留置権ともう一つは何か","先取特権","担保物権"],
+["約定担保物権の主なものとして抵当権と何があるか","質権","担保物権"],
+["留置権の効果として物を留置できるが、その物を何することはできないか","使用収益","担保物権"],
+["抵当権とは、債権者が債務者または第三者が占有を移転しないで担保に供した何（原則）について優先弁済を受ける権利か","不動産","担保物権"],
+["譲渡担保は判例法上認められている何担保か","非典型担保","担保物権"],
+["所有権留保とは、実物は買主に引き渡すが所有権は売主に留保しておき、何が完了した後に所有権を移転するものか","弁済","担保物権"],
+["契約不適合責任とは、有償契約において種類・品質・数量に問題があった場合に売主が負う責任で、追完請求権や何があるか","代金減額請求権","契約不適合責任"],
+["契約不適合責任の存続期間は、買主が知ったときから何年以内に通知が必要か","1年","契約不適合責任"],
+["配偶者と直系卑属が相続人の場合、配偶者の相続分はいくらか","2分の1","相続"],
+["配偶者と直系尊属が相続人の場合、配偶者の相続分はいくらか","3分の2","相続"],
+["配偶者と兄弟姉妹が相続人の場合、配偶者の相続分はいくらか","4分の3","相続"],
+["代襲相続で、子が欠格となる例として親を殺害等する行為は何と呼ばれるか","欠格","相続"],
+["代襲相続で、子が廃除となる例として親への虐待等がある場合、何が必要か","家裁への請求または遺言","相続"],
+["相続の承認・放棄のうち、マイナスは遺産から返済するが返済できない部分は返済しないものを何というか","限定承認","相続"],
+["限定承認は複数の相続人が存在する時は何が必要か","全員一致","相続"],
+["相続開始から何年を経過した後の遺産分割は、具体的相続分を考慮せず法定相続分で行うか","10年","相続"],
+["遺留分とは、遺言によっても侵害できない相続人の何か","取り分","遺留分・遺言"],
+["兄弟姉妹の遺留分はいくらか","無（ゼロ）","遺留分・遺言"],
+["直系尊属だけが相続人の場合の遺留分は遺産のいくらか","3分の1","遺留分・遺言"],
+["その他の場合の遺留分は遺産のいくらか","2分の1","遺留分・遺言"],
+["遺留分侵害額請求権の請求期間は、知った日から何年以内か","1年","遺留分・遺言"],
+["遺留分侵害額請求では、現物の返還に代えて何の支払いを請求できるか","金銭","遺留分・遺言"],
+["遺言は何歳以上であれば未成年でも可能か","15歳以上","遺留分・遺言"],
+["自筆証書遺言には証人は不要だが、家庭裁判所の何が必要か","検認","遺留分・遺言"],
+["公正証書遺言には近親者以外の何人以上の証人が必要か","2人","遺留分・遺言"],
+["自筆証書遺言の法改正で、何についてはワープロ使用が可能になったか","財産目録","遺留分・遺言"],
+["清算型の法的倒産手続として、破産ともう一つは何か","特別清算","倒産法"],
+["再建型の法的倒産手続として、民事再生ともう一つは何か","会社更生","倒産法"],
+["会社更生法において、抵当権等の担保を持つ者を何というか","別除権者（更生担保権者）","倒産法"],
+["会社更生法で更生計画案の可決に必要な債権者の組の議決権要件（減免等の内容）は議決権総額の何分の何以上か","3分の2以上","倒産法"],
+["民事再生の対象は法人・個人だが、会社更生の対象は何のみか","株式会社","倒産法"],
+["会社更生での管理処分権者は誰か","更生管財人","倒産法"],
+["自己の商号や氏名を他者が使用することを許した者が負う責任を何の責任と言うか","名板貸し","商行為"],
+["名板貸しの責任で相手方が保護されるには何が要求されるか","善意無重過失","商行為"],
+["持分会社の種類として合名会社・合資会社ともう一つは何か","合同会社","会社法基礎"],
+["無限責任では会社が倒産した時に何を含めて負債総額の全額を負うか","個人財産","会社法基礎"],
+["有限責任では責任範囲が出資額の何内か","限度","会社法基礎"],
+["直接責任では出資者が会社債権者に対して直接弁済義務を負い、間接責任では何という形で支払うか","出資","会社法基礎"],
+["株式会社の出資者責任は全員が何か","間接有限責任","会社法基礎"],
+["株主総会は株式会社の最高意思決定機関であり、何機関でもあるか","絶対的必要","株主総会"],
+["定時株主総会は通常事業年度終了後何ヶ月以内に開催されるか","3ヶ月以内","株主総会"],
+["株主の議決権は原則として一株何議決権か","一議決権（一株一議決権）","株主総会"],
+["普通決議の必要得票数は、出席株主の議決権の何か","過半数","株主総会"],
+["特別決議の必要得票数は、出席株主の議決権の何以上か","3分の2以上","株主総会"],
+["特別決議の主な決議事項として監査役の解任・減資・定款の変更・解散ともう一つは何か","組織再編","株主総会"],
+["株主総会の議事録は当該総会の日から何年間本店に備え置く必要があるか","10年間","株主総会"],
+["株主の自益権の一例として残余財産分配請求権ともう一つ有名なものは何か","剰余金配当請求権","株主総会"],
+["株主の共益権の一例として議決権や株主代表訴訟提起権のほか、何を閲覧する権利があるか","会計帳簿","株主総会"],
+["株主総会議題提案権を行使するには、総株主の議決権の何パーセント以上または議決権300個以上の保有が必要か","1%","株主総会"],
+["会社解散の訴えを提起するには、総株主の議決権または発行済株式の何パーセント以上が必要か","10%","株主総会"],
+["取締役と株式会社との関係は何か","委任関係","取締役・取締役会"],
+["取締役が負う義務として忠実義務・善管注意義務ともう一つは何か","競業避止義務","取締役・取締役会"],
+["取締役の任務懈怠責任は原則として過失責任だが、自己のために利益相反の直接取引をした場合は何になるか","無過失責任","取締役・取締役会"],
+["取締役は株主総会の何決議で選任・解任されるか","普通決議","取締役・取締役会"],
+["取締役の任期は原則として選任後何年以内に終了する事業年度の定時総会終結の時までか","2年以内","取締役・取締役会"],
+["取締役会設置のためには何名以上の取締役が必要か","3名以上","取締役・取締役会"],
+["取締役会の決議は議決に加わる取締役の何分の何が出席し、その過半数の賛成が必要か","過半数（過半数が出席）","取締役・取締役会"],
+["副社長等の名称の使用を許された取締役を何と呼ぶか","表見代表取締役","取締役・取締役会"],
+["取締役会の議事録等は当該取締役会の日から何年間本店に備え置く必要があるか","10年間","取締役・取締役会"],
+["監査役の任期は何年か","4年","監査役・その他機関"],
+["監査役の解任には株主総会の何決議が必要か","特別決議","監査役・その他機関"],
+["監査役の任期は取締役と異なり短縮することが何か","できない","監査役・その他機関"],
+["監査役会は3人以上の監査役で構成され、内その何分の何以上は社外監査役でなければならないか","半数以上","監査役・その他機関"],
+["会計監査人の資格は監査法人または何に限定されているか","公認会計士","監査役・その他機関"],
+["会計監査人の任期は何年か","1年","監査役・その他機関"],
+["会計参与の任期は取締役と同じであり、定款または株主総会の何決議で短縮できるか","普通決議","監査役・その他機関"],
+["指名委員会等設置会社において業務執行を行うのは誰か","執行役","監査役・その他機関"],
+["指名委員会等設置会社では取締役の任期は何年か","1年","監査役・その他機関"],
+["監査等委員会設置会社の監査等委員である取締役は何人以上で、その過半数は何でなければならないか","3人以上・社外取締役","監査役・その他機関"],
+["大会社とは、資本金5億円以上または負債総額何億円以上の株式会社か","200億円","監査役・その他機関"],
+["株式譲渡制限会社では役員の任期を最長何年まで延長できるか","10年","株式"],
+["株式譲渡制限会社で、株主ごとに異なる取扱いを行う定款変更には株主総会の何決議が必要か","特殊決議","株式"],
+["公開会社では議決権制限株式が発行済株式総数の何分の1を超えた場合に措置が必要か","2分の1","株式"],
+["拒否権付種類株式の別名は何か","黄金株","株式"],
+["株主との合意による自己株式の有償取得には株主総会の何決議が必要か","普通決議","株式"],
+["自己株式取得の財源規制として何を超えてはならないか","分配可能額","株式"],
+["特定の株主から自己株式を取得する場合に他の株主が持つ権利を何というか","売主追加請求権","株式"],
+["株式併合には株主総会の何決議が必要か","特別決議","株式"],
+["新株予約権の典型例として何があるか","ストックオプション","株式"],
+["発起設立とは、発起人が発行する株式の全部を引き受けて設立することで、募集設立では何が開催されるか","創立総会","会社設立"],
+["定款は公証人の何を受ける必要があるか","認証","会社設立"],
+["定款の絶対的記載事項に記載がない場合、定款そのものが何になるか","無効","会社設立"],
+["定款の相対的記載事項に記載しなければ何が生じないか","効力","会社設立"],
+["変態設立事項がある場合、原則として何の検査を受ける必要があるか","検査役","会社設立"],
+["会社の公告方法として定款に定めがない場合は何による公告が強制適用となるか","官報","会社設立"],
+["事業譲渡で譲渡会社は原則として同一市町村および隣接市町村において何年の競業禁止義務を負うか","20年","組織再編"],
+["事業の全部譲渡・全部譲受・重要な一部の譲渡には株主総会の何決議が必要か","特別決議","組織再編"],
+["株式交換とは、会社がその発行済株式の全部を他の株式会社または何に取得させることか","合同会社","組織再編"],
+["株式移転で当事者となれるのは何会社のみか","株式会社","組織再編"],
+["簡易組織再編では対価の財産価額が存続会社の純資産額の何分の1以下の場合に株主総会決議が不要か","5分の1","組織再編"],
+["略式組織再編で特別支配会社とは総株式の何分の9以上を有する会社か","10分の9","組織再編"],
+["特許法の2つの機能として、発明者に独占権を付与し発明を保護する機能と、第三者への何を与える機能があるか","利用させる機会","特許法"],
+["発明者には特許を受ける権利が発生するが、これが認められるのは何のみか","自然人","特許法"],
+["日本の特許法では、出願だけでなく何が必要か（審査請求制度）","審査請求","特許法"],
+["審査請求は出願から原則何年以内に行わないと取り下げたとみなされるか","3年","特許法"],
+["拒絶査定に不服がある場合、謄本送達の日から原則何ヶ月以内に拒絶査定不服審判を請求できるか","3ヶ月以内","特許法"],
+["特許出願から何年6ヶ月経過すると出願公開されるか","1年6ヶ月","特許法"],
+["補償請求権の請求は特許権設定登録後に行えるが、金額は何相当額か","実施料相当額","特許法"],
+["専用実施権とは設定の範囲において独占排他的に利用が可能な権利で、設定には当事者の設定契約と何が必要か","設定登録","特許法"],
+["職務発明とは企業の開発の一環としてなされた従業者の発明等で、私生活上でなされた発明を何というか","自由発明","特許法"],
+["職務発明で使用者が権利を受けた場合、従業員等は何の支払いを受ける権利を持つか","相当の対価","特許法"],
+["特許権の存続期間は出願日から何年か","20年","特許法"],
+["特許権の延長が認められる場合、最大何年の延長が可能か","5年","特許法"],
+["特許異議申し立ては特許掲載公報の発行の日から何ヶ月以内に誰でも行えるか","6ヶ月以内","特許法"],
+["先使用権とは、特許出願時に現に日本国内でその発明の実施として業をしている者が、特許権発生後も無償で利用できる何の通常実施権か","無償","特許法"],
+["実用新案の考案とは、自然法則を利用した技術的思想の創作で物品の形状・構造・組合せに係るもので、特許の発明と違い何が不要か","高度性（高度）","意匠法・実用新案法"],
+["意匠とは物品の形状・模様・色彩またはこれらの結合であって、視覚を通じて何を起こさせるものか","美感","意匠法・実用新案法"],
+["関連意匠制度では、基礎意匠の登録出願日から原則何年以内に出願する必要があるか","10年以内","意匠法・実用新案法"],
+["意匠権の存続期間は基礎意匠の登録出願日から何年か","25年","意匠法・実用新案法"],
+["実用新案権の存続期間は出願日から何年か","10年","意匠法・実用新案法"],
+["意匠法改正で意匠権の定義に追加されたものとして建築物（内装を含む）ともう一つは何か","画像","意匠法・実用新案法"],
+["商標とは、文字・図形・記号・立体的形状等の標章であって、商品・役務に使用するもので、商標権は登録日から何年か","10年（更新可能）","商標法"],
+["地域団体商標登録制度の出願は、法人格を有する組合・商工会議所・商工会ともう一つが可能か","NPO法人","商標法"],
+["不使用取消審判は日本国内で継続して何年以上使用していない登録商標について誰でも請求できるか","3年以上","商標法"],
+["防護表彰登録制度とは、需要者に広く認識された場合に他人が指定商品等以外に使用することを禁止するものか","禁止するもの","商標法"],
+["特許権・実用新案権・意匠権・商標権の4つを総称して何というか","産業財産権","産業財産権まとめ"],
+["産業財産権同士の抵触については何が優先されるか","先願の権利","産業財産権まとめ"],
+["産業財産権の侵害に対する対応策として差止請求や損害賠償請求のほか、不当利得返還請求・信頼回復措置請求ともう一つは何か","刑事告訴","産業財産権まとめ"],
+["実用新案権の侵害については何の規定はないか","過失の推定","産業財産権まとめ"],
+["商標権の侵害では、特許権の補償金請求権に相当して何請求権があるか","金銭的請求権","産業財産権まとめ"],
+["著作権法上の著作物とは、思想または感情を創作的に表現したもので、文芸・学術・美術または何の範囲に属するか","音楽","著作権法"],
+["著作者人格権は一身専属的な人格的利益を保護する権利であり、何できないか","譲渡・相続","著作権法"],
+["著作者人格権の3つとして公表権・氏名表示権ともう一つは何か","同一性保持権","著作権法"],
+["著作財産権の複製権のほか、アップロードも対象となる権利を何というか","送信可能化権","著作権法"],
+["不正競争防止法の10類型のうち、周知されているものと同一・類似の商品等表示を使用し混同を生じさせる行為を何と言うか","周知表示混同惹起行為","不正競争防止法"],
+["著名な商品等表示と同一・類似の表示を使用する行為で、混同を必要としない規制を何行為というか","著名表示冒用行為","不正競争防止法"],
+["他人の商品の形態を模倣した商品を譲渡等する行為を何行為と言うか（デッドコピーとも呼ばれる）","商品形態模倣行為","不正競争防止法"],
+["営業秘密として保護されるための要件は秘密管理性・有用性ともう一つは何か","非公知性","不正競争防止法"],
+["限定提供データとして保護されるための要件として限定提供型・電磁的管理性ともう一つは何か","相当蓄積性","不正競争防止法"],
+["私的独占とは、事業者が他の事業者の事業活動を排除・支配することで、一定の取引分野における競争を何に制限することか","実質的","独占禁止法"],
+["不当な取引制限の典型例としてカルテルともう一つは何か","入札談合","独占禁止法"],
+["不公正な取引方法として一般指定ともう一つは何か","特殊指定","独占禁止法"],
+["共同の取引拒絶とは、競争者と共同してある事業者に対し供給を拒絶する行為で、他の事業者にさせることを何というか","間接的取引拒絶","独占禁止法"],
+["再販売価格の拘束で、著作物については何が適用除外として法に明文化されているか","法の適用除外","独占禁止法"],
+["優越的地位の濫用の例として、押し付け販売・協賛金ともう一つは何か","払込制（減額・遅延等）","独占禁止法"],
+["製造物責任法は、製造者に過失責任の例外として何責任を課すことで消費者を保護するか","無過失責任","PL法・消費者法"],
+["PL法の製造物とは、製造または加工された何か","動産","PL法・消費者法"],
+["PL法において製造者に含まれる業者として、輸入業者・表示製造業者ともう一つは何業者か","実質製造業者","PL法・消費者法"],
+["PL法では何についての責任を規定しており、製造物のみに損害が生じる場合（故障等）には適用されないか","拡大損害","PL法・消費者法"],
+["PL法の時効は何年か","3年","PL法・消費者法"],
+["消費者契約法の適用範囲は事業者と契約を締結した誰か","すべての消費者","PL法・消費者法"],
+["消費者契約法の取消権の行使期間は、追認できる時から何年または契約締結から5年か","1年","PL法・消費者法"],
+["特定商取引法のクーリングオフで、店舗・営業所以外の場所での取引は何日間か","8日間","PL法・消費者法"],
+["特定商取引法のクーリングオフで、マルチ商法・内職・モニター商法は何日間か","20日間","PL法・消費者法"],
+["ネガティブ・オプションの場合、商品が送られてきた日から何できるか","直ちに自由に処分できる","PL法・消費者法"]
+];
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+const CATEGORIES = [...new Set(RAW_DATA.map(d => d[2]))];
+
+// ============================================================
+// STATE
+// ============================================================
+let questions = [];      // current filtered & shuffled set
+let currentIdx = 0;
+let sessionCorrect = 0;
+let sessionTotal = 0;
+let sessionResults = []; // {q, a, cat, chosen, correct}
+let reviewMode = false;
+
+// ============================================================
+// LOCALSTORAGE
+// ============================================================
+const LS_KEY = 'kiho_law_stats_v2';
+function loadStats() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || { total: 0, correct: 0, cats: {}, wrong: [] }; }
+  catch { return { total: 0, correct: 0, cats: {}, wrong: [] }; }
+}
+function saveStats(stats) { localStorage.setItem(LS_KEY, JSON.stringify(stats)); }
+
+function updateStats(result) {
+  const stats = loadStats();
+  stats.total++;
+  if (result.correct) stats.correct++;
+  if (!stats.cats[result.cat]) stats.cats[result.cat] = { t: 0, c: 0 };
+  stats.cats[result.cat].t++;
+  if (result.correct) stats.cats[result.cat].c++;
+  if (!result.correct) {
+    stats.wrong.unshift({ q: result.q, a: result.a, chosen: result.chosen, cat: result.cat });
+    if (stats.wrong.length > 50) stats.wrong = stats.wrong.slice(0, 50);
+  }
+  saveStats(stats);
+}
+
+function clearStats() {
+  if (confirm('成績データをリセットしますか？')) {
+    localStorage.removeItem(LS_KEY);
+    renderStats();
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  // Populate category dropdown
+  const sel = document.getElementById('cat-filter');
+  CATEGORIES.forEach(cat => {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    const count = RAW_DATA.filter(d => d[2] === cat).length;
+    opt.textContent = `${cat}（${count}問）`;
+    sel.appendChild(opt);
+  });
+  resetQuiz();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function resetQuiz() {
+  const cat = document.getElementById('cat-filter').value;
+  const pool = RAW_DATA.filter(d => cat === 'all' || d[2] === cat);
+  questions = shuffle(pool);
+  currentIdx = 0;
+  sessionCorrect = 0;
+  sessionTotal = 0;
+  sessionResults = [];
+  reviewMode = false;
+  document.getElementById('completed-banner').style.display = 'none';
+  renderQuestion();
+}
+
+function reviewWrong() {
+  const stats = loadStats();
+  if (!stats.wrong.length) { alert('間違い問題がありません！すごいですね！'); return; }
+  questions = shuffle(stats.wrong.map(w => [w.q, w.a, w.cat]));
+  currentIdx = 0;
+  sessionCorrect = 0;
+  sessionTotal = 0;
+  sessionResults = [];
+  reviewMode = true;
+  document.getElementById('completed-banner').style.display = 'none';
+  showScreen('quiz');
+  renderQuestion();
+}
+
+// ============================================================
+// RENDER QUESTION
+// ============================================================
+function renderQuestion() {
+  if (currentIdx >= questions.length) {
+    // Quiz done
+    document.getElementById('completed-banner').style.display = 'block';
+    document.getElementById('next-btn').style.display = 'none';
+    document.getElementById('answer-reveal').style.display = 'none';
+    showResults();
+    return;
+  }
+
+  const q = questions[currentIdx];
+  const total = questions.length;
+
+  // Progress
+  const pct = (currentIdx / total) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('quiz-counter').textContent = `問題 ${currentIdx + 1} / ${total}`;
+  document.getElementById('quiz-cat-tag').textContent = q[2];
+  document.getElementById('question-text').textContent = q[0];
+  document.getElementById('answer-reveal').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+
+  // Generate 4 choices
+  const correct = q[1];
+  const wrongPool = RAW_DATA
+    .filter(d => d[1] !== correct && d[2] === q[2])
+    .map(d => d[1]);
+  
+  // Fallback to all if not enough in category
+  const allWrong = RAW_DATA.filter(d => d[1] !== correct).map(d => d[1]);
+  const wrongChoices = shuffle(wrongPool.length >= 3 ? wrongPool : allWrong).slice(0, 3);
+  
+  const choices = shuffle([correct, ...wrongChoices]);
+  const labels = ['A', 'B', 'C', 'D'];
+
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  choices.forEach((choice, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-label">${labels[i]}</span><span class="opt-text">${choice}</span>`;
+    btn.onclick = () => selectAnswer(choice, correct, choices, btn);
+    grid.appendChild(btn);
+  });
+}
+
+function selectAnswer(chosen, correct, choices, btn) {
+  const isCorrect = chosen === correct;
+  sessionTotal++;
+  if (isCorrect) sessionCorrect++;
+
+  const q = questions[currentIdx];
+  const result = { q: q[0], a: q[1], cat: q[2], chosen, correct: isCorrect };
+  sessionResults.push(result);
+  updateStats(result);
+
+  // Style buttons
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    const text = b.querySelector('.opt-text').textContent;
+    if (text === correct) b.classList.add('correct');
+    else if (b === btn && !isCorrect) b.classList.add('wrong');
+  });
+
+  // Show answer
+  const reveal = document.getElementById('answer-reveal');
+  reveal.style.display = 'block';
+  reveal.className = 'answer-reveal' + (isCorrect ? '' : ' wrong-reveal');
+  document.getElementById('answer-text').textContent = correct;
+
+  document.getElementById('next-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+  currentIdx++;
+  renderQuestion();
+}
+
+// ============================================================
+// RESULTS
+// ============================================================
+function showResults() {
+  showScreen('results');
+
+  const pct = sessionTotal > 0 ? Math.round((sessionCorrect / sessionTotal) * 100) : 0;
+  document.getElementById('r-score').innerHTML = `${pct}<span>点</span>`;
+  document.getElementById('r-total').textContent = `${sessionTotal}問中${sessionCorrect}問正解`;
+
+  const gradeEl = document.getElementById('r-grade');
+  if (pct >= 90) { gradeEl.textContent = '🏆 Sランク 完璧！'; gradeEl.className = 'result-grade grade-S'; }
+  else if (pct >= 75) { gradeEl.textContent = '⭐ Aランク 合格圏内！'; gradeEl.className = 'result-grade grade-A'; }
+  else if (pct >= 60) { gradeEl.textContent = '📘 Bランク もう少し！'; gradeEl.className = 'result-grade grade-B'; }
+  else if (pct >= 40) { gradeEl.textContent = '📙 Cランク 要復習'; gradeEl.className = 'result-grade grade-C'; }
+  else { gradeEl.textContent = '📕 Dランク 基礎から！'; gradeEl.className = 'result-grade grade-D'; }
+
+  // Cat breakdown from session
+  const catStats = {};
+  sessionResults.forEach(r => {
+    if (!catStats[r.cat]) catStats[r.cat] = { t: 0, c: 0 };
+    catStats[r.cat].t++;
+    if (r.correct) catStats[r.cat].c++;
+  });
+
+  renderRadar('radar-canvas', catStats);
+
+  // Breakdown bars
+  const list = document.getElementById('breakdown-list');
+  list.innerHTML = '';
+  Object.entries(catStats).sort((a, b) => (b[1].c/b[1].t) - (a[1].c/a[1].t)).forEach(([cat, s]) => {
+    const p = Math.round((s.c / s.t) * 100);
+    list.innerHTML += `
+      <div class="cat-row">
+        <div class="cat-name">${cat}</div>
+        <div class="cat-bar-wrap"><div class="cat-bar" style="width:${p}%"></div></div>
+        <div class="cat-pct">${p}%</div>
+      </div>`;
+  });
+  if (!Object.keys(catStats).length) list.innerHTML = '<div style="color:#888;text-align:center;padding:20px;">データなし</div>';
+}
+
+// ============================================================
+// RADAR CHART (vanilla canvas)
+// ============================================================
+function renderRadar(canvasId, catStats) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2;
+  const R = Math.min(W, H) * 0.36;
+  
+  const cats = Object.keys(catStats);
+  if (!cats.length) {
+    ctx.fillStyle = '#888';
+    ctx.font = '16px Noto Sans JP';
+    ctx.textAlign = 'center';
+    ctx.fillText('データなし', cx, cy);
+    return;
+  }
+
+  const n = cats.length;
+  const vals = cats.map(c => catStats[c] ? catStats[c].c / catStats[c].t : 0);
+  
+  const angle = (i) => (Math.PI * 2 * i / n) - Math.PI / 2;
+
+  // Grid
+  for (let level = 1; level <= 5; level++) {
+    const r = R * level / 5;
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const a = angle(i);
+      const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = level === 5 ? 'rgba(201,168,76,0.3)' : 'rgba(0,0,0,0.07)';
+    ctx.lineWidth = level === 5 ? 1.5 : 1;
+    ctx.stroke();
+  }
+
+  // Axes
+  for (let i = 0; i < n; i++) {
+    const a = angle(i);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Data polygon
+  ctx.beginPath();
+  for (let i = 0; i < n; i++) {
+    const a = angle(i);
+    const r = R * vals[i];
+    const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(201,168,76,0.22)';
+  ctx.fill();
+  ctx.strokeStyle = '#c9a84c';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Points
+  for (let i = 0; i < n; i++) {
+    const a = angle(i);
+    const r = R * vals[i];
+    ctx.beginPath();
+    ctx.arc(cx + r * Math.cos(a), cy + r * Math.sin(a), 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#c9a84c';
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // Labels
+  ctx.fillStyle = '#3a4a5c';
+  ctx.font = `bold ${Math.max(9, Math.min(12, 160/n))}px "Noto Sans JP"`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let i = 0; i < n; i++) {
+    const a = angle(i);
+    const labelR = R + 36;
+    const x = cx + labelR * Math.cos(a);
+    const y = cy + labelR * Math.sin(a);
+    // Shorten long labels
+    const label = cats[i].length > 7 ? cats[i].slice(0, 6) + '…' : cats[i];
+    ctx.fillText(label, x, y);
+    // Show %
+    ctx.fillStyle = '#c9a84c';
+    ctx.font = `bold ${Math.max(8, Math.min(11, 140/n))}px "Noto Sans JP"`;
+    ctx.fillText(Math.round(vals[i]*100)+'%', x, y + 13);
+    ctx.fillStyle = '#3a4a5c';
+    ctx.font = `bold ${Math.max(9, Math.min(12, 160/n))}px "Noto Sans JP"`;
+  }
+}
+
+// ============================================================
+// STATS SCREEN
+// ============================================================
+function renderStats() {
+  const stats = loadStats();
+  document.getElementById('st-total').textContent = stats.total;
+  document.getElementById('st-correct').textContent = stats.correct;
+  const rate = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
+  document.getElementById('st-rate').textContent = rate + '%';
+
+  // Radar from all-time cats
+  renderRadar('radar-canvas-stats', stats.cats);
+
+  // Wrong list
+  const wl = document.getElementById('wrong-list');
+  if (!stats.wrong.length) {
+    wl.innerHTML = '<div class="no-wrong">🎉 間違い問題がありません！</div>';
+    return;
+  }
+  wl.innerHTML = stats.wrong.slice(0, 20).map(w => `
+    <div class="wrong-item">
+      <div class="wrong-q">${w.q}</div>
+      <div class="wrong-a-row">
+        <span class="wrong-correct">✓ ${w.a}</span>
+        ${w.chosen !== w.a ? `<span class="wrong-wrong">✗ ${w.chosen}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// SCREEN SWITCHING
+// ============================================================
+function showScreen(name) {
+  ['quiz', 'results', 'stats'].forEach(s => {
+    const el = document.getElementById(s + '-screen');
+    if (el) el.style.display = 'none';
+  });
+  const navBtns = document.querySelectorAll('.nav-btn');
+  navBtns.forEach((b, i) => {
+    b.classList.remove('active');
+    if ((name === 'quiz' && i === 0) || (name === 'stats' && i === 1) || (name === 'results' && i === 0)) {
+      b.classList.add('active');
+    }
+  });
+
+  if (name === 'results') {
+    document.getElementById('results-screen').style.display = 'block';
+  } else if (name === 'stats') {
+    document.getElementById('stats-screen').style.display = 'block';
+    renderStats();
+  } else {
+    document.getElementById('quiz-screen').style.display = 'block';
+  }
+}
+
+// Start
+window.addEventListener('load', init);
+</script>
+</body>
+</html>
